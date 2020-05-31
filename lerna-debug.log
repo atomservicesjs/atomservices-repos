@@ -1,6 +1,0 @@
-44 error Error: Command failed: git tag v0.9.0-alpha.0 -m v0.9.0-alpha.0
-44 error fatal: tag 'v0.9.0-alpha.0' already exists
-44 error
-44 error     at makeError (/Users/panit/Code/ARCH/DEV/atom-repos/node_modules/execa/index.js:174:9)
-44 error     at /Users/panit/Code/ARCH/DEV/atom-repos/node_modules/execa/index.js:278:16
-44 error     at processTicksAndRejections (internal/process/task_queues.js:97:5)
