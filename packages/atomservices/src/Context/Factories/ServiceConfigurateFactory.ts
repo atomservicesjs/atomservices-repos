@@ -1,6 +1,6 @@
 import { EventProcessType, EventVersioning, EventStream, IServiceConfigs, IServiceConfigurate } from "atomservicescore";
 
-const DefaultVersioning: EventVersioning = "None";
+const DefaultVersioning: EventVersioning = "none";
 const DefaultLevel: EventStream.StreamLevel = "Public";
 const DefaultProcessType: EventProcessType = "asynchronous";
 

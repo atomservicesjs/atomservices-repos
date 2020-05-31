@@ -48,7 +48,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       service: {
         level: "Scope",
         processType: "synchronous",
-        versioning: "Dynamic",
+        versioning: "dynamic",
       },
     };
 
@@ -95,7 +95,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
         Test: {
           level: "Scope",
           processType: "synchronous",
-          versioning: "Static"
+          versioning: "static"
         },
       },
     };
@@ -179,7 +179,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
         Test: {
           level: "Scope",
           processType: "synchronous",
-          versioning: "Static"
+          versioning: "static"
         },
         Others: {},
       },
@@ -263,13 +263,13 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       service: {
         level: "Public",
         processType: "synchronous",
-        versioning: "Dynamic",
+        versioning: "dynamic",
       },
       events: {
         Test: {
           level: "Scope",
           processType: "asynchronous",
-          versioning: "Static"
+          versioning: "static"
         },
         Others: {},
       },

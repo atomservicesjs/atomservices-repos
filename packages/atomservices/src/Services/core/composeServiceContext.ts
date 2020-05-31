@@ -50,7 +50,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         let eventVersion: number | undefined;
 
         // VERSIONING
-        if (versioning === "None") {
+        if (versioning === "none") {
           eventVersion = undefined;
         } else {
           eventVersion = event._version;
@@ -68,7 +68,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
             const currentVersion = version;
 
             if (!isEventVersionDefined(event)) {
-              if (versioning === "Dynamic") {
+              if (versioning === "dynamic") {
                 eventVersion = currentVersion + 1;
                 event._version = eventVersion;
               } else {
@@ -87,7 +87,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
             }
           } else {
             if (!isEventVersionDefined(event)) {
-              if (versioning === "Dynamic") {
+              if (versioning === "dynamic") {
                 eventVersion = -1;
                 event._version = eventVersion;
               } else {
