@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "setup": "lerna bootstrap",
-    "release": "lerna publish",
+    "release": "lerna publish --force-publish",
     "build": "lerna run build"
   },
   "devDependencies": {
