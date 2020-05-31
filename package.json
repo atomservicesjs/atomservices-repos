@@ -1,0 +1,12 @@
+{
+  "name": "atom-repos",
+  "private": true,
+  "scripts": {
+    "setup": "lerna bootstrap",
+    "release": "lerna publish",
+    "build": "lerna run build"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.0"
+  }
+}
