@@ -21,6 +21,7 @@ export {
   IServiceStreamDefinition,
 } from "./Service";
 
+export { DispatchFunc } from "./DispatchFunc";
 export { IAtomCommand } from "./IAtomCommand";
 export { IAtomEvent } from "./IAtomEvent";
 export { IAtomState } from "./IAtomState";

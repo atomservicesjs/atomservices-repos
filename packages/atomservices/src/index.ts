@@ -11,6 +11,7 @@ export * as States from "./States";
 export { GlobalScope } from "./GlobalScope";
 
 export {
+  DispatchFunc,
   DispatchResult,
   EventStream,
   IAtomCommand,
