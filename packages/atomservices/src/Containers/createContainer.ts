@@ -1,9 +1,11 @@
 import { IManagedService, IManagedServiceContainer, IServiceContainer } from "atomservicescore";
 import { composeNotifiers, ContainersNotifyData } from "../Notifiers";
 import { createService } from "../Services/createService";
+import { Enhancement } from "./Enhancement";
+import { IManagedServiceContainerResult } from "./IManagedServiceContainerResult";
 
-export const createContainer = (container: IServiceContainer): IManagedServiceContainer =>
-  ((CONTAINER): IManagedServiceContainer => {
+export const createContainer = (container: IServiceContainer, enhancement?: Enhancement): IManagedServiceContainerResult =>
+  ((CONTAINER, ENHANCEMENT): IManagedServiceContainerResult | ReturnType<Enhancement> => {
     const ContainerNotifiers = CONTAINER.Notifiers || [];
     const NOTIFIERS = composeNotifiers(...ContainerNotifiers);
 
@@ -66,5 +68,11 @@ export const createContainer = (container: IServiceContainer): IManagedServiceCo
       },
     }));
 
-    return Container;
-  })(container);
+    if (ENHANCEMENT) {
+      return ENHANCEMENT(Container);
+    } else {
+      return {
+        Container,
+      };
+    }
+  })(container, enhancement);
