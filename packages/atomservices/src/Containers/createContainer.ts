@@ -20,7 +20,7 @@ export const createContainer = (container: IServiceContainer, enhancement?: Enha
     const ResolveService = (type: string) => Services[type];
 
     const Container: IManagedServiceContainer = {
-      assignDispatch: (service: string | { Type: string; }, options: { isAutoConnect?: boolean; }) => {
+      assignDispatch: (service: string | { Type: string; }, options: { isAutoConnect?: boolean; } = {}) => {
         const { isAutoConnect = false } = options;
         const target = typeof service === "string" ? { Type: service } : service;
 
@@ -85,7 +85,9 @@ export const createContainer = (container: IServiceContainer, enhancement?: Enha
     }));
 
     if (ENHANCEMENT) {
-      return ENHANCEMENT(Container);
+      const result = ENHANCEMENT(Container);
+
+      return result || { Container };
     } else {
       return {
         Container,
