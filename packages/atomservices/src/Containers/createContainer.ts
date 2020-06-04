@@ -20,21 +20,21 @@ export const createContainer = (container: IServiceContainer, enhancement?: Enha
     const ResolveService = (type: string) => Services[type];
 
     const Container: IManagedServiceContainer = {
-      assignDispatch: (service: string | { type: string; }, options: { isAutoConnect?: boolean; }) => {
+      assignDispatch: (service: string | { Type: string; }, options: { isAutoConnect?: boolean; }) => {
         const { isAutoConnect = false } = options;
-        const src = typeof service === "string" ? { type: service } : service;
+        const target = typeof service === "string" ? { Type: service } : service;
 
         const dispatch = async (command: ICommand, listening?: (data: any) => void) => {
           if (isAutoConnect) {
             await Container.connect();
           }
 
-          const Service = ResolveService(src.type);
+          const Service = ResolveService(target.Type);
 
           return Service.dispatch(command, listening);
         };
 
-        return Object.assign(src, { dispatch });
+        return Object.assign(target, { dispatch });
       },
       connect: (() => {
         let IsConnected = false;
