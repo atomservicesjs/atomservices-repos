@@ -13,4 +13,11 @@ export interface IManagedServiceContainer {
     IManagedService;
   scope: () =>
     string;
+  assignDispatch(service: string, options?: { isAutoConnect?: boolean; }): {
+    type: string;
+    dispatch: (command: ICommand, listening?: (data: any) => void) => Promise<IDispatchResult>;
+  };
+  assignDispatch<T extends { type: string; }>(service: T, options?: { isAutoConnect?: boolean; }): T & {
+    dispatch: (command: ICommand, listening?: (data: any) => void) => Promise<IDispatchResult>;
+  };
 }

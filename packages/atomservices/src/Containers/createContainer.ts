@@ -1,4 +1,4 @@
-import { IManagedService, IManagedServiceContainer, IServiceContainer } from "atomservicescore";
+import { ICommand, IManagedService, IManagedServiceContainer, IServiceContainer } from "atomservicescore";
 import { composeNotifiers, ContainersNotifyData } from "../Notifiers";
 import { createService } from "../Services/createService";
 import { Enhancement } from "./Enhancement";
@@ -20,6 +20,22 @@ export const createContainer = (container: IServiceContainer, enhancement?: Enha
     const ResolveService = (type: string) => Services[type];
 
     const Container: IManagedServiceContainer = {
+      assignDispatch: (service: string | { type: string; }, options: { isAutoConnect?: boolean; }) => {
+        const { isAutoConnect = false } = options;
+        const src = typeof service === "string" ? { type: service } : service;
+
+        const dispatch = async (command: ICommand, listening?: (data: any) => void) => {
+          if (isAutoConnect) {
+            await Container.connect();
+          }
+
+          const Service = ResolveService(src.type);
+
+          return Service.dispatch(command, listening);
+        };
+
+        return Object.assign(src, { dispatch });
+      },
       connect: (() => {
         let IsConnected = false;
 
