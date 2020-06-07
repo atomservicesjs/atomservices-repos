@@ -3,7 +3,7 @@ import { createEventCursor } from "./core/createEventCursor";
 import { IEventStoresConnector } from "./IEventStoresConnector";
 
 export const createEventStores = (connector: IEventStoresConnector): IEventStores => ((Connector): IEventStores => {
-  const stores: IEventStores = {
+  const Stores: IEventStores = {
     countAggregateIDs: async (scope, type, options) => {
       return 0;
     },
@@ -113,7 +113,7 @@ export const createEventStores = (connector: IEventStoresConnector): IEventStore
     },
   };
 
-  Object.freeze(stores);
+  Object.freeze(Stores);
 
-  return stores;
+  return Stores;
 })(connector);
