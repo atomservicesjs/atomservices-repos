@@ -1,10 +1,10 @@
-import { ICommand, IManagedService, IManagedServiceContainer, IServiceContainer } from "atomservicescore";
+import { ICommand, IManagedService, IManagedServiceContainer, IServicesContainer } from "atomservicescore";
 import { composeNotifiers, ContainersNotifyData } from "../Notifiers";
 import { createService } from "../Services/createService";
 import { Enhancement } from "./Enhancement";
 import { IManagedServiceContainerResult } from "./IManagedServiceContainerResult";
 
-export const createContainer = (container: IServiceContainer, enhancement?: Enhancement): IManagedServiceContainerResult =>
+export const createContainer = (container: IServicesContainer, enhancement?: Enhancement): IManagedServiceContainerResult =>
   ((CONTAINER, ENHANCEMENT): IManagedServiceContainerResult | ReturnType<Enhancement> => {
     const ContainerNotifiers = CONTAINER.Notifiers || [];
     const NOTIFIERS = composeNotifiers(...ContainerNotifiers);

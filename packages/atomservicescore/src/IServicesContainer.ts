@@ -5,7 +5,7 @@ import { INotifier } from "./INotifier";
 import { IService } from "./IService";
 import { IStateAccessConnect } from "./IStateAccessConnect";
 
-export interface IServiceContainer {
+export interface IServicesContainer {
   scope: string;
   Services: {
     [type: string]: IService;

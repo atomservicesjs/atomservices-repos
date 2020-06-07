@@ -32,7 +32,7 @@ export {
   INotifyObject,
   ISFComponents,
   IService,
-  IServiceContainer,
+  IServicesContainer,
   IServiceConfigs,
   IServiceConfigurate,
   IServiceContext,

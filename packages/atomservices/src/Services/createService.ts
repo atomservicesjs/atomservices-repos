@@ -1,4 +1,4 @@
-import { IManagedService, IService, IServiceContainer, IServiceDefinition } from "atomservicescore";
+import { IManagedService, IService, IServicesContainer, IServiceDefinition } from "atomservicescore";
 import { ServiceConfigurateFactory } from "../Context/Factories/ServiceConfigurateFactory";
 import { ServiceIdentifierFactory } from "../Context/Factories/ServiceIdentifierFactory";
 import { GlobalScope } from "../GlobalScope";
@@ -9,7 +9,7 @@ import { composeServiceContext } from "./core/composeServiceContext";
 import { connectStream } from "./core/connectStream";
 import { createCommandDispatcher } from "./core/createCommandDispatcher";
 
-export const createService = (service: IService, container?: IServiceContainer): IManagedService => ((SERVICE, CONTAINER): IManagedService => {
+export const createService = (service: IService, container?: IServicesContainer): IManagedService => ((SERVICE, CONTAINER): IManagedService => {
   const {
     CommandHandlers = [],
     EventHandlers = [],
