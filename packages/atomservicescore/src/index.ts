@@ -5,6 +5,7 @@ export * as Reaction from "./Reaction";
 export * as StateHandler from "./StateHandler";
 
 export {
+  DispatchFunc,
   DispatchResult,
   IValidationResultType,
 } from "./common";
@@ -21,7 +22,6 @@ export {
   IServiceStreamDefinition,
 } from "./Service";
 
-export { DispatchFunc } from "./DispatchFunc";
 export { IAtomCommand } from "./IAtomCommand";
 export { IAtomEvent } from "./IAtomEvent";
 export { IAtomState } from "./IAtomState";
