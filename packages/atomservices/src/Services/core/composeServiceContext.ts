@@ -47,16 +47,14 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         EventStream.directTo(ref, data),
       dispatch: async (event) => {
         const versioning = ServiceConfigurate.versioning(event.name);
-        let eventVersion: number | undefined;
+        let eventVersion: number | undefined = event._version;
 
-        // VERSIONING
-        if (versioning === "none") {
-          eventVersion = undefined;
-        } else {
-          eventVersion = event._version;
-
-          // STORE EVENT
-          if (EventStores && !isReplay) {
+        // STORE EVENT
+        if (EventStores && !isReplay) {
+          if (versioning === "none") {
+            await EventStores.storeEvent(scope, event);
+          } else {
+            // VERSIONING
             let version: number;
 
             try {
@@ -85,14 +83,14 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
             } else {
               throw EventVersionConflictedConcurrentException(event, currentVersion, scope);
             }
-          } else {
-            if (!isEventVersionDefined(event)) {
-              if (versioning === "dynamic") {
-                eventVersion = -1;
-                event._version = eventVersion;
-              } else {
-                throw NotAllowedDynamicVersionErrorException(event, scope);
-              }
+          }
+        } else {
+          if (!isEventVersionDefined(event)) {
+            if (versioning === "dynamic") {
+              eventVersion = -1;
+              event._version = eventVersion;
+            } else {
+              throw NotAllowedDynamicVersionErrorException(event, scope);
             }
           }
         }
