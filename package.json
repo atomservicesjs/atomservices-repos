@@ -2,6 +2,7 @@
   "name": "atom-repos",
   "private": true,
   "scripts": {
+    "init": "lerna init",
     "setup": "lerna bootstrap",
     "release": "lerna publish --force-publish",
     "build": "lerna run build"
