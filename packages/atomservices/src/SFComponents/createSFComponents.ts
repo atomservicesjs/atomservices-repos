@@ -18,7 +18,7 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
   };
   event: {
     name: string;
-    process: EventHandler.EventProcessHandle<Event, ProcessResult>;
+    process?: EventHandler.EventProcessHandle<Event, ProcessResult>;
     processEffect?: EventHandler.EventProcessEffectHandle<Event, ProcessResult>;
   };
   command?: {
@@ -157,7 +157,13 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
     },
     EventHandler: {
       name: eventStruct.name,
-      process: eventStruct.process,
+      process: async (event, metadata, state) => {
+        if (eventStruct.process) {
+          eventStruct.process(event, metadata, state);
+        } else {
+          state.apply(event);
+        }
+      },
       processEffect: eventStruct.processEffect,
     },
     StateHandler: {

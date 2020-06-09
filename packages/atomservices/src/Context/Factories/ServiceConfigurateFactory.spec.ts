@@ -39,7 +39,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("None");
+      expect(versioning).to.equal("none");
     });
   });
 
@@ -85,7 +85,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("Dynamic");
+      expect(versioning).to.equal("dynamic");
     });
   });
 
@@ -157,7 +157,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("Static");
+      expect(versioning).to.equal("static");
     });
 
     it("expect versioning to equal 'None' as default configs", () => {
@@ -169,7 +169,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("None");
+      expect(versioning).to.equal("none");
     });
   });
 
@@ -242,7 +242,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("Static");
+      expect(versioning).to.equal("static");
     });
 
     it("expect versioning to equal 'None' as default configs", () => {
@@ -254,7 +254,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("None");
+      expect(versioning).to.equal("none");
     });
   });
 
@@ -332,7 +332,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("Static");
+      expect(versioning).to.equal("static");
     });
 
     it("expect versioning to equal 'Dynamic' as service configs", () => {
@@ -344,7 +344,7 @@ describe("ServiceConfigurateFactory.ts tests", () => {
       const versioning = ServiceConfigurate.versioning(name);
 
       // asserts
-      expect(versioning).to.equal("Dynamic");
+      expect(versioning).to.equal("dynamic");
     });
   });
 });
