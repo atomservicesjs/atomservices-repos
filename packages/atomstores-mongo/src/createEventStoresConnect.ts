@@ -1,7 +1,7 @@
 import { Db, MongoClient, MongoClientOptions } from "mongodb";
-import { IEventStoresConnector } from "./IEventStoresConnector";
+import { IEventStoresConnect } from "./IEventStoresConnect";
 
-interface IStoresConnectorConfigs {
+interface IEventStoresConnectConfigs {
   url?: string;
   dbName: string;
   options?: any;
@@ -17,7 +17,7 @@ const DEFINED = {
   url: "mongodb://localhost:27017",
 };
 
-export const createStoresConnector = (configs: IStoresConnectorConfigs = { dbName: "EventStores" }): IEventStoresConnector => ((Configs): IEventStoresConnector => {
+export const createEventStoresConnect = (configs: IEventStoresConnectConfigs = { dbName: "EventStores" }): IEventStoresConnect => ((Configs): IEventStoresConnect => {
   const {
     dbName,
     url = DEFINED.url,

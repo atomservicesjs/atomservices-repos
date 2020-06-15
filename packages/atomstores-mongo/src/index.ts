@@ -1,3 +1,4 @@
-export { IEventStoresConnector } from "./IEventStoresConnector";
+export { IEventStoresConnect } from "./IEventStoresConnect";
+export { connectEventStores } from "./connectEventStores";
 export { createEventStores } from "./createEventStores";
-export { createStoresConnector } from "./createStoresConnector";
+export { createEventStoresConnect } from "./createEventStoresConnect";

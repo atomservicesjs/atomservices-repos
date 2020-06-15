@@ -2,10 +2,10 @@ import { IEventStores } from "atomservicescore";
 import { expect } from "chai";
 import { MongoClient } from "mongodb";
 import { createEventStores } from "./createEventStores";
-import { IEventStoresConnector } from "./IEventStoresConnector";
+import { IEventStoresConnect } from "./IEventStoresConnect";
 
 let client: MongoClient;
-let connector: IEventStoresConnector;
+let connector: IEventStoresConnect;
 const dbName = "TestEventStores";
 
 describe("createEventStores.ts tests", () => {
