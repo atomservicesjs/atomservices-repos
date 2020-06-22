@@ -159,9 +159,9 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
       name: eventStruct.name,
       process: async (event, metadata, state) => {
         if (eventStruct.process) {
-          eventStruct.process(event, metadata, state);
+          return eventStruct.process(event, metadata, state);
         } else {
-          state.apply(event);
+          return state.apply(event);
         }
       },
       processEffect: eventStruct.processEffect,
@@ -170,7 +170,7 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
       name: eventStruct.name,
       apply: async (event) => {
         if (stateStruct.apply) {
-          await stateStruct.apply(event);
+          return stateStruct.apply(event);
         }
       },
     },

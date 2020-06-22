@@ -16,6 +16,10 @@ export const operateEventProcess = (
 
       if (EventHandler.processEffect) {
         await EventHandler.processEffect({ event, metadata, result }, resulting, ServiceContext);
+      } else {
+        if (result) {
+          await resulting(result);
+        }
       }
 
       Notifiers.emit(ServicesNotifyData.SERVICE_EVENT_HANDLED(event.type, {
