@@ -1,6 +1,6 @@
 {
   "name": "atomstores-mongo",
-  "version": "0.10.0-alpha.12",
+  "version": "0.10.0-alpha.13",
   "description": "Providing Event Stores Implementing MongoDB",
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
@@ -34,10 +34,10 @@
     "mongodb": "3"
   },
   "dependencies": {
-    "atomservicescore": "^0.10.0-alpha.12"
+    "atomservicescore": "^0.10.0-alpha.13"
   },
   "devDependencies": {
-    "@types/mongodb": "3.5.20",
+    "@types/mongodb": "3.5.24",
     "archdevts": "20.5.31",
     "mongodb": "3.5.9"
   }

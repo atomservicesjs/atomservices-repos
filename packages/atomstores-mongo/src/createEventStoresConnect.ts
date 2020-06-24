@@ -1,4 +1,5 @@
 import { Db, MongoClient, MongoClientOptions } from "mongodb";
+import { createEventsIndex } from "./core/createEventsIndex";
 import { IEventStoresConnect } from "./IEventStoresConnect";
 
 interface IEventStoresConnectConfigs {
@@ -28,6 +29,7 @@ export const createEventStoresConnect = (configs: IEventStoresConnectConfigs = {
 
   const Client = new MongoClient(url, options);
   let DBInstance: Db;
+  const IndexMap: { [collection: string]: true; } = {};
 
   return {
     connect: async (scope, type) => {
@@ -38,7 +40,14 @@ export const createEventStoresConnect = (configs: IEventStoresConnectConfigs = {
         DBInstance = Client.db(dbName);
       }
 
-      return DBInstance.collection(collection);
+      const Collection = DBInstance.collection(collection);
+
+      if (!IndexMap[collection]) {
+        await createEventsIndex(Collection);
+        IndexMap[collection] = true;
+      }
+
+      return Collection;
     },
   };
 })(configs);
