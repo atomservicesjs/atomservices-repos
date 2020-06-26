@@ -1,6 +1,7 @@
 import { Db, Collection } from "mongodb";
 import { IEventStores } from "atomservicescore";
-import { createEventsIndex } from "./core/createEventsIndex";
+import { ensureCollection } from "./core/ensureCollection";
+import { ensureEventsIndexes } from "./core/ensureEventsIndexes";
 import { createEventStores } from "./createEventStores";
 import { IEventStoresConnect } from "./IEventStoresConnect";
 
@@ -11,8 +12,9 @@ export const connectEventStores = (connectDB: () => Promise<Db>): IEventStores =
     connect: async (scope, type) => {
       if (!MAP[type]) {
         const DB = await connectDB();
+        await ensureCollection(DB, type);
         const collection = DB.collection(type);
-        await createEventsIndex(collection);
+        await ensureEventsIndexes(collection);
         MAP[type] = collection;
       }
 

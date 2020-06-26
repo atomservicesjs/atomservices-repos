@@ -3,8 +3,8 @@ import { Collection } from "mongodb";
 import { createEventCursor } from "./core/createEventCursor";
 import { IEventStoresConnect } from "./IEventStoresConnect";
 
-export const createEventStores = (EventStoresConnector: IEventStoresConnect | { connect: (scope: string, type: string) => Promise<Collection>; }): IEventStores =>
-  ((EventStoresConnect): IEventStores => {
+export const createEventStores = (EventStoresConnect: IEventStoresConnect | { connect: (scope: string, type: string) => Promise<Collection>; }): IEventStores =>
+  ((EventStores): IEventStores => {
     const Stores: IEventStores = {
       countAggregateIDs: async (scope, type, options) => {
         return 0;
@@ -13,25 +13,25 @@ export const createEventStores = (EventStoresConnector: IEventStoresConnect | { 
         return 0;
       },
       fetchAggregateIDs: async (scope, type, options) => {
-        const collection = await EventStoresConnect.connect(scope, type);
+        const collection = await EventStores.connect(scope, type);
         const cursor = collection.find();
 
         return createEventCursor.fromFind(cursor);
       },
       fetchEvents: async (scope, type, options) => {
-        const collection = await EventStoresConnect.connect(scope, type);
+        const collection = await EventStores.connect(scope, type);
         const cursor = collection.find();
 
         return createEventCursor.fromFind(cursor);
       },
       queryByEventID: async (scope, type, eventID) => {
-        const collection = await EventStoresConnect.connect(scope, type);
+        const collection = await EventStores.connect(scope, type);
         const event = await collection.findOne({ _id: eventID });
 
         return event;
       },
       queryCurrentVersion: async (scope, type, aggregateID) => {
-        const collection = await EventStoresConnect.connect(scope, type);
+        const collection = await EventStores.connect(scope, type);
         const list = await collection.aggregate([
           { $match: { aggregateID } },
           { $sort: { _version: -1 } },
@@ -54,7 +54,7 @@ export const createEventStores = (EventStoresConnector: IEventStoresConnect | { 
         }
       },
       queryEventsByAggregateID: async (scope, type, aggregateID, options) => {
-        const collection = await EventStoresConnect.connect(scope, type);
+        const collection = await EventStores.connect(scope, type);
 
         if (options) {
           const { initialVersion, limit } = options;
@@ -89,7 +89,7 @@ export const createEventStores = (EventStoresConnector: IEventStoresConnect | { 
         }
       },
       storeEvent: async (scope, event) => {
-        const collection = await EventStoresConnect.connect(scope, event.type);
+        const collection = await EventStores.connect(scope, event.type);
 
         await collection.insertOne(event);
       },
@@ -106,7 +106,7 @@ export const createEventStores = (EventStoresConnector: IEventStoresConnect | { 
 
         const types = Object.keys(reducedEvents);
         const ps = types.map(async (type) => {
-          const collection = await EventStoresConnect.connect(scope, type);
+          const collection = await EventStores.connect(scope, type);
 
           return collection.insertMany(reducedEvents[type]);
         });
@@ -118,4 +118,4 @@ export const createEventStores = (EventStoresConnector: IEventStoresConnect | { 
     Object.freeze(Stores);
 
     return Stores;
-  })(EventStoresConnector);
+  })(EventStoresConnect);
