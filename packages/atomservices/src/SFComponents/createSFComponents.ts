@@ -27,13 +27,13 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
     transform?: (command: Command, identifier: IServiceIdentifier<Event["aggregateID"], Event["_id"]>) => Event;
   };
   state?: {
-    apply?: (event: Event) => Promise<void>;
+    apply: (event: Event) => Promise<any>;
   };
 }) => {
   const configs = structure.configs || {};
   const commandStruct = structure.command || {};
   const eventStruct = structure.event;
-  const stateStruct = structure.state || {};
+  const stateStruct = structure.state || { apply: () => Promise.resolve() };
 
   const components: ISFComponents<Event, Command> = {
     Configs: {
@@ -168,11 +168,8 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
     },
     StateHandler: {
       name: eventStruct.name,
-      apply: async (event) => {
-        if (stateStruct.apply) {
-          return stateStruct.apply(event);
-        }
-      },
+      apply: async (event) =>
+        stateStruct.apply(event),
     },
   };
 
