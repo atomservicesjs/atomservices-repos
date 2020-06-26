@@ -5,7 +5,7 @@ export const composeStateApplier = (props: { StateHandlers: IStateHandlers; }) =
   (({ StateHandlers }): IStateApplier => {
     const Applier: IStateApplier = {
       apply: async (event) => {
-        StateHandlers.apply(event);
+        return StateHandlers.apply(event);
       },
     };
 

@@ -24,7 +24,8 @@ export const composeStateHandlers = (...stateHandlers: IStateHandler[]) =>
       const HANDLERS: IStateHandlers = {
         apply: async (event) => {
           const handler = HANDLERS_MAP[event.name];
-          await handler.apply(event);
+
+          return handler.apply(event);
         },
         type: () =>
           type,

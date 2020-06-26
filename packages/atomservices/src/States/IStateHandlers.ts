@@ -2,5 +2,5 @@ import { IEvent } from "atomservicescore";
 
 export interface IStateHandlers {
   type: () => string;
-  apply: (events: IEvent) => Promise<void>;
+  apply: (events: IEvent) => Promise<any>;
 }
