@@ -1,5 +1,5 @@
 {
-  "name": "atom-repos",
+  "name": "atomservicesjs-repos",
   "private": true,
   "scripts": {
     "init": "lerna init",

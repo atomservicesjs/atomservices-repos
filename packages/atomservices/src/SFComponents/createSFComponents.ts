@@ -9,6 +9,7 @@ import {
   EventStream,
   EventVersioning,
 } from "atomservicescore";
+import { ObjectRefiner } from "./common/ObjectRefiner";
 
 export const createSFComponents = <Event extends IEvent = IEvent, Command extends ICommand = ICommand<Event["payloads"], Event["_createdBy"]>, ProcessResult = any>(structure: {
   configs?: {
@@ -54,7 +55,7 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
         payloads: {
           configurable: false,
           enumerable: true,
-          value: payloads,
+          value: ObjectRefiner.refine(payloads),
           writable: false,
         },
       };

@@ -77,6 +77,30 @@ describe("createSFComponents.ts tests", () => {
         // asserts
         expect(result).to.deep.equal(expected);
       });
+
+      it("expect to create a commander from event with passing undefined properties", () => {
+        // arranges
+        const prop: any = undefined;
+        const expected = {
+          name: eventName,
+          payloads: {
+            inPayloadsText: "text",
+          },
+          _createdBy: "creater",
+          _version: 1,
+        };
+
+        // acts
+        const result = Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: prop,
+          _createdBy: "creater",
+          _version: 1,
+        });
+
+        // asserts
+        expect(result).to.deep.equal(expected);
+      });
     });
 
     describe("with provided command", () => {
@@ -154,7 +178,7 @@ describe("createSFComponents.ts tests", () => {
 
     after(() => {
       timer.restore();
-    })
+    });
 
     it("expect CommandHandler to transform an event", () => {
       // arranges
@@ -274,7 +298,7 @@ describe("createSFComponents.ts tests", () => {
 
     after(() => {
       timer.restore();
-    })
+    });
 
     it("expect CommandHandler to transform an event", () => {
       // arranges
@@ -349,6 +373,101 @@ describe("createSFComponents.ts tests", () => {
 
       // asserts
       expect(result).to.deep.equal(expected);
+    });
+  });
+
+  describe("#EventHandler with default process", () => {
+    const spyStateApply = sinon.spy();
+    const state = {
+      apply: spyStateApply,
+    };
+
+    const { EventHandler } = createSFComponents<ITestedEvent>({
+      event: {
+        name: eventName,
+      },
+      state,
+    });
+
+    afterEach(() => {
+      spyStateApply.resetHistory();
+    });
+
+    it("expect EventHandler to process an event with default process", async () => {
+      // arranges
+      const event: any = {};
+      const metadata: any = {};
+
+      // acts
+      await EventHandler.process(event, metadata, state);
+
+      // asserts
+      expect(spyStateApply.called).to.equal(true);
+      expect(spyStateApply.callCount).to.equal(1);
+    });
+  });
+
+  describe("#EventHandler with provided process", () => {
+    const spyEventProcess = sinon.spy();
+    const spyStateApply = sinon.spy();
+    const state = {
+      apply: spyStateApply,
+    };
+
+    const { EventHandler } = createSFComponents<ITestedEvent>({
+      event: {
+        name: eventName,
+        process: spyEventProcess,
+      },
+      state,
+    });
+
+    afterEach(() => {
+      spyStateApply.resetHistory();
+    });
+
+    it("expect EventHandler to process an event with default process", async () => {
+      // arranges
+      const event: any = {};
+      const metadata: any = {};
+
+      // acts
+      await EventHandler.process(event, metadata, state);
+
+      // asserts
+      expect(spyEventProcess.called).to.equal(true);
+      expect(spyEventProcess.callCount).to.equal(1);
+      expect(spyStateApply.called).to.equal(false);
+    });
+  });
+
+  describe("#StateHandler with provided process", () => {
+    const spyStateApply = sinon.spy();
+    const state = {
+      apply: spyStateApply,
+    };
+
+    const { StateHandler } = createSFComponents<ITestedEvent>({
+      event: {
+        name: eventName,
+      },
+      state,
+    });
+
+    afterEach(() => {
+      spyStateApply.resetHistory();
+    });
+
+    it("expect StateHandler to apply an event with provided state", async () => {
+      // arranges
+      const event: any = {};
+
+      // acts
+      await StateHandler.apply(event);
+
+      // asserts
+      expect(spyStateApply.called).to.equal(true);
+      expect(spyStateApply.callCount).to.equal(1);
     });
   });
 });

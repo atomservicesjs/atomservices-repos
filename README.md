@@ -1,1 +1,1 @@
-# atom-repos
+# atomservicesjs-repos
