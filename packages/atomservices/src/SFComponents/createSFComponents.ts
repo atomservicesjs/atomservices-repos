@@ -9,6 +9,7 @@ import {
   EventStream,
   EventVersioning,
 } from "atomservicescore";
+import { InvalidVersioningValueException } from "../Exceptions/Core";
 import { ObjectRefiner } from "./common/ObjectRefiner";
 
 export const createSFComponents = <Event extends IEvent = IEvent, Command extends ICommand = ICommand<Event["payloads"], Event["_createdBy"]>, ProcessResult = any>(structure: {
@@ -69,13 +70,28 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
         };
       }
 
-      if (_version) {
+      if (_version === undefined || _version === null) {
+        if (configs.versioning && configs.versioning === "static") {
+          throw InvalidVersioningValueException("static", "undefined");
+        }
+      } else {
+        if (configs.versioning) {
+          if (configs.versioning === "none") {
+            throw InvalidVersioningValueException("none", _version);
+          }
+
+          if (configs.versioning === "static" && _version < 1) {
+            throw InvalidVersioningValueException("static", _version);
+          }
+        }
+
         properties._version = {
           configurable: false,
           enumerable: true,
           value: _version,
           writable: false,
         };
+
       }
 
       return Object.defineProperties({}, properties);

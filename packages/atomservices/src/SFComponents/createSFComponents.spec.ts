@@ -156,6 +156,189 @@ describe("createSFComponents.ts tests", () => {
         expect(result).to.deep.equal(expected);
       });
     });
+
+    describe("with configs", () => {
+      it("expect to create a command, #1", () => {
+        // arranges
+        const { Commander } = createSFComponents<ITestedEvent>({
+          configs: {
+            versioning: "static",
+          },
+          event: {
+            name: eventName,
+          },
+        });
+        const expected = {
+          name: eventName,
+          payloads: {
+            inPayloadsText: "text",
+            inPayloadsNumber: 0,
+          },
+          _version: 1,
+        };
+
+        // acts
+        const result = Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: 0,
+          _version: 1,
+        });
+
+        // asserts
+        expect(result).to.deep.equal(expected);
+      });
+
+      it("expect to create a command, #2", () => {
+        // arranges
+        const { Commander } = createSFComponents<ITestedEvent>({
+          configs: {
+            versioning: "none",
+          },
+          event: {
+            name: eventName,
+          },
+        });
+        const expected = {
+          name: eventName,
+          payloads: {
+            inPayloadsText: "text",
+            inPayloadsNumber: 0,
+          },
+        };
+
+        // acts
+        const result = Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: 0,
+        });
+
+        // asserts
+        expect(result).to.deep.equal(expected);
+      });
+
+      it("expect to create a command, #3", () => {
+        // arranges
+        const { Commander } = createSFComponents<ITestedEvent>({
+          configs: {
+            versioning: "dynamic",
+          },
+          event: {
+            name: eventName,
+          },
+        });
+        const expected = {
+          name: eventName,
+          payloads: {
+            inPayloadsText: "text",
+            inPayloadsNumber: 0,
+          },
+          _version: 1,
+        };
+
+        // acts
+        const result = Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: 0,
+          _version: 1,
+        });
+
+        // asserts
+        expect(result).to.deep.equal(expected);
+      });
+
+      it("expect to create a command, #4", () => {
+        // arranges
+        const { Commander } = createSFComponents<ITestedEvent>({
+          configs: {
+            versioning: "dynamic",
+          },
+          event: {
+            name: eventName,
+          },
+        });
+        const expected = {
+          name: eventName,
+          payloads: {
+            inPayloadsText: "text",
+            inPayloadsNumber: 0,
+          },
+        };
+
+        // acts
+        const result = Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: 0,
+        });
+
+        // asserts
+        expect(result).to.deep.equal(expected);
+      });
+
+      it("expect to throw an InvalidVersioningValueException, #1", () => {
+        // arranges
+        const { Commander } = createSFComponents<ITestedEvent>({
+          configs: {
+            versioning: "static",
+          },
+          event: {
+            name: eventName,
+          },
+        });
+
+        // acts
+        const act = () => Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: 0,
+        });
+
+        // asserts
+        expect(act).to.throw(Error);
+      });
+
+      it("expect to throw an InvalidVersioningValueException, #2", () => {
+        // arranges
+        const { Commander } = createSFComponents<ITestedEvent>({
+          configs: {
+            versioning: "static",
+          },
+          event: {
+            name: eventName,
+          },
+        });
+
+        // acts
+        const act = () => Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: 0,
+          _version: 0,
+        });
+
+        // asserts
+        expect(act).to.throw(Error);
+      });
+
+      it("expect to throw an InvalidVersioningValueException, #3", () => {
+        // arranges
+        const { Commander } = createSFComponents<ITestedEvent>({
+          configs: {
+            versioning: "none",
+          },
+          event: {
+            name: eventName,
+          },
+        });
+
+        // acts
+        const act = () => Commander({
+          inPayloadsText: "text",
+          inPayloadsNumber: 0,
+          _version: 0,
+        });
+
+        // asserts
+        expect(act).to.throw(Error);
+      });
+    });
   });
 
   describe("#CommandHandler with default command", () => {

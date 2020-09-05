@@ -67,10 +67,21 @@ export const EventPublishingErrorException = (error: Error, event: IEvent, scope
     },
   );
 
-export const NotAllowedDynamicVersionErrorException = (event: IEvent, scope: string) =>
+export const NotAllowedVersionEventErrorException = (event: IEvent, scope: string) =>
   createException(
-    Constants["000108_NotAllowedDynamicVersionError"],
-    `dynamic-version events not allowed`,
+    Constants["000107_NotAllowedVersionEventError"],
+    `versioning events not allowed`,
+    {
+      event,
+      scope,
+      type: event.type,
+    },
+  );
+
+export const NotAllowedDynamicVersionEventErrorException = (event: IEvent, scope: string) =>
+  createException(
+    Constants["000108_NotAllowedDynamicVersionEventError"],
+    `dynamic-versioning events not allowed`,
     {
       event,
       scope,
@@ -80,3 +91,9 @@ export const NotAllowedDynamicVersionErrorException = (event: IEvent, scope: str
 
 export const NoEventStoresProvidedException = () =>
   createException(Constants["000110_NoEventStoresProvided"], `no EventStores provided`);
+
+export const InvalidVersioningValueException = (configs: "none" | "static", value: any) =>
+  createException(
+    Constants["000120_InvalidVersioningValue"],
+    `invalid versioning value -- [configs: ${configs} - value: ${value}]`,
+  );

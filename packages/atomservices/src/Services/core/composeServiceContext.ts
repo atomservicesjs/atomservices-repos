@@ -13,7 +13,8 @@ import {
   EventStoringErrorException,
   EventVersionConflictedConcurrentException,
   NoEventStoresProvidedException,
-  NotAllowedDynamicVersionErrorException,
+  NotAllowedVersionEventErrorException,
+  NotAllowedDynamicVersionEventErrorException,
 } from "../../Exceptions/Core";
 
 import { operateEventProcess } from "./operateEventProcess";
@@ -52,7 +53,11 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         // STORE EVENT
         if (EventStores && !isReplay) {
           if (versioning === "none") {
-            await EventStores.storeEvent(scope, event);
+            if (event._version === undefined || event._version === null) {
+              await EventStores.storeEvent(scope, event);
+            } else {
+              throw NotAllowedVersionEventErrorException(event, scope);
+            }
           } else {
             // VERSIONING
             let version: number;
@@ -70,7 +75,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
                 eventVersion = currentVersion + 1;
                 event._version = eventVersion;
               } else {
-                throw NotAllowedDynamicVersionErrorException(event, scope);
+                throw NotAllowedDynamicVersionEventErrorException(event, scope);
               }
             }
 
@@ -90,7 +95,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
               eventVersion = -1;
               event._version = eventVersion;
             } else {
-              throw NotAllowedDynamicVersionErrorException(event, scope);
+              throw NotAllowedDynamicVersionEventErrorException(event, scope);
             }
           }
         }
