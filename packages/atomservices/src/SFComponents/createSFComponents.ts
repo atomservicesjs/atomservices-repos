@@ -150,7 +150,7 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
             },
           };
 
-          if (command._version) {
+          if (command._version !== undefined && command._version !== null) {
             eventProperties._version = {
               configurable: false,
               enumerable: true,

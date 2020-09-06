@@ -110,7 +110,7 @@ describe("TestTools/SFC.ts tests #1", () => {
       });
     });
 
-    it("expect to transform an event with required and optional properties", () => {
+    it("expect to transform an event with required and optional properties, #1", () => {
       // arranges
 
       // acts
@@ -130,6 +130,52 @@ describe("TestTools/SFC.ts tests #1", () => {
         },
         _createdBy: "createdBy",
         _version: 1,
+      });
+    });
+
+    it("expect to transform an event with required and optional properties, #2", () => {
+      // arranges
+
+      // acts
+      const command = Sample.Commander({
+        aggregateID: "aggregateID",
+        prop: "value",
+        _createdBy: "createdBy",
+        _version: -1,
+      });
+
+      // asserts
+      SFCTestTools.Command(command).transform({
+        aggregateID: "aggregateID",
+        name: "SampleEvent",
+        payloads: {
+          prop: "value",
+        },
+        _createdBy: "createdBy",
+        _version: -1,
+      });
+    });
+
+    it("expect to transform an event with required and optional properties, #3", () => {
+      // arranges
+
+      // acts
+      const command = Sample.Commander({
+        aggregateID: "aggregateID",
+        prop: "value",
+        _createdBy: "createdBy",
+        _version: 0,
+      });
+
+      // asserts
+      SFCTestTools.Command(command).transform({
+        aggregateID: "aggregateID",
+        name: "SampleEvent",
+        payloads: {
+          prop: "value",
+        },
+        _createdBy: "createdBy",
+        _version: 0,
       });
     });
   });

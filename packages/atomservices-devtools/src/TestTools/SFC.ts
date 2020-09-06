@@ -24,24 +24,18 @@ export const SFC = <Event extends IEvent = IEvent, Command extends ICommand = IC
           _version?: number | undefined;
           _createdAt?: Date;
           _createdBy?: any;
+        }, options?: {
+          exactMatch?: boolean;
         }) => {
           const type = expected.type || "TEST";
-          Context.Factories.ServiceConfigurateFactory.create({service: {}})
+          Context.Factories.ServiceConfigurateFactory.create({
+            events: {
+              [type]: components.Configs,
+            },
+          });
           const identifier = Context.Factories.ServiceIdentifierFactory.create(Identifiers.UUIDIdentifier, type);
           const event = components.CommandHandler.transform(command, identifier);
           const { name, payloads, ...others } = expected;
-
-          // tslint:disable-next-line: no-console
-          console.log(components.Configs);
-          /*
-          if (components.Configs.versioning === "none") {
-            expect(event._version).to.equal(undefined);
-          }
-
-          if (components.Configs.versioning === "static") {
-            expect(event._version).to.greaterThan(0);
-          }
-          */
 
           expect(event.name).to.equal(name);
           expect(event.payloads).to.deep.equal(payloads);
@@ -50,5 +44,6 @@ export const SFC = <Event extends IEvent = IEvent, Command extends ICommand = IC
         },
       };
     },
+    expect,
   };
 };
