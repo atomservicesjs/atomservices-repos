@@ -1,6 +1,6 @@
 {
   "name": "atomservices-devtools",
-  "version": "0.10.0-alpha.20",
+  "version": "0.10.0-alpha.21",
   "description": "Development Tools",
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
@@ -32,6 +32,6 @@
     "archdevts": "20.8.2"
   },
   "devDependencies": {
-    "atomservices": "^0.10.0-alpha.20"
+    "atomservices": "^0.10.0-alpha.21"
   }
 }
