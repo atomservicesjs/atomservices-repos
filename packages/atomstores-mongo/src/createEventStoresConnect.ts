@@ -1,5 +1,4 @@
 import { Db, MongoClient, MongoClientOptions } from "mongodb";
-// import { ensureCollection } from "./core/ensureCollection";
 import { ensureEventsIndexes } from "./core/ensureEventsIndexes";
 import { IEventStoresConnect } from "./IEventStoresConnect";
 
@@ -41,7 +40,6 @@ export const createEventStoresConnect = (configs: IEventStoresConnectConfigs = {
         DBInstance = Client.db(dbName);
       }
 
-      // await ensureCollection(DBInstance, collection);
       const Collection = DBInstance.collection(collection);
 
       if (!IndexMap[collection]) {
