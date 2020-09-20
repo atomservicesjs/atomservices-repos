@@ -29,9 +29,9 @@
   "license": "MIT",
   "repository": "git+https://github.com/atomservicesjs/atom-repos",
   "dependencies": {
-    "archdevts": "20.8.2"
+    "archdevts": "20.9.1"
   },
   "devDependencies": {
-    "atomservices": "^0.10.0-alpha.22"
+    "atomservices": "0.10.0-alpha.22"
   }
 }

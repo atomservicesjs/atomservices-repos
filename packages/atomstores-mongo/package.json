@@ -34,11 +34,11 @@
     "mongodb": "3"
   },
   "dependencies": {
-    "atomservicescore": "^0.10.0-alpha.22"
+    "atomservicescore": "0.10.0-alpha.22"
   },
   "devDependencies": {
-    "@types/mongodb": "3.5.26",
-    "archdevts": "20.8.2",
-    "mongodb": "3.6.0"
+    "@types/mongodb": "3.5.27",
+    "archdevts": "20.9.1",
+    "mongodb": "3.6.2"
   }
 }
