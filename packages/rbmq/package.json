@@ -1,6 +1,6 @@
 {
   "name": "rbmq",
-  "version": "0.10.0-alpha.24",
+  "version": "0.10.0-alpha.25",
   "description": "Provide AMQ Protocol Connection",
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
