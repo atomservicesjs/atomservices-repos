@@ -11,33 +11,10 @@ export const operateEventProcess = (
 ) =>
   async (service: { scope: string; type: string; }, event: IEvent, metadata: EventStream.IStreamMetadata) => {
     metadata = MetadataRefiner.consume(metadata);
+    let result;
+
     try {
-      const result = await EventHandler.process(event, metadata, StateApplier);
-
-      if (EventHandler.processEffect) {
-        await EventHandler.processEffect({ event, metadata, result }, resulting, ServiceContext);
-      } else {
-        if (result) {
-          await resulting(result);
-        }
-      }
-
-      Notifiers.emit(ServicesNotifyData.SERVICE_EVENT_HANDLED(event.type, {
-        eventID: event._id,
-        metadata,
-        scope: service.scope,
-        type: service.type,
-        // tslint:disable-next-line: object-literal-sort-keys
-        name: event.name,
-        aggregateID: event.aggregateID,
-        _createdAt: event._createdAt,
-        _createdBy: event._createdBy,
-        _version: event._version,
-      }, {
-        event,
-        metadata,
-        result,
-      }));
+      result = await EventHandler.process(event, metadata, StateApplier);
     } catch (error) {
       Notifiers.error(ServicesNotifyData.SERVICE_COMMAND_ERROR(event.name, {
         scope: service.scope,
@@ -47,5 +24,32 @@ export const operateEventProcess = (
       }, {
         event,
       }), error);
+
+      result = error;
     }
+
+    if (EventHandler.processEffect) {
+      await EventHandler.processEffect({ event, metadata, result }, resulting, ServiceContext);
+    } else {
+      if (result) {
+        await resulting(result);
+      }
+    }
+
+    Notifiers.emit(ServicesNotifyData.SERVICE_EVENT_HANDLED(event.type, {
+      eventID: event._id,
+      metadata,
+      scope: service.scope,
+      type: service.type,
+      // tslint:disable-next-line: object-literal-sort-keys
+      name: event.name,
+      aggregateID: event.aggregateID,
+      _createdAt: event._createdAt,
+      _createdBy: event._createdBy,
+      _version: event._version,
+    }, {
+      event,
+      metadata,
+      result,
+    }));
   };
