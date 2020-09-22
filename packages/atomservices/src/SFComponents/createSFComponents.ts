@@ -185,16 +185,11 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
           return error;
         }
       },
-      processEffect: async (process, resulting, context) => {
-        if (eventStruct.processEffect) {
-          await eventStruct.processEffect(process, resulting, context);
-        }
-      },
+      processEffect: eventStruct.processEffect,
     },
     StateHandler: {
       name: eventStruct.name,
-      apply: async (event) =>
-        stateStruct.apply(event),
+      apply: stateStruct.apply,
     },
   };
 
