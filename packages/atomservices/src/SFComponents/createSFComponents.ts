@@ -177,9 +177,9 @@ export const createSFComponents = <Event extends IEvent = IEvent, Command extend
       process: async (event, metadata, state) => {
         try {
           if (eventStruct.process) {
-            return eventStruct.process(event, metadata, state);
+            return await eventStruct.process(event, metadata, state);
           } else {
-            return state.apply(event);
+            return await state.apply(event);
           }
         } catch (error) {
           return error;
