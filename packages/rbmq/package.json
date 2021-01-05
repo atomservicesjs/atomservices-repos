@@ -1,6 +1,6 @@
 {
   "name": "rbmq",
-  "version": "0.10.0-alpha.29",
+  "version": "0.10.0-alpha.30",
   "description": "Provide AMQ Protocol Connection",
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
@@ -35,7 +35,7 @@
     "amqplib": "0.6.0"
   },
   "devDependencies": {
-    "@types/amqplib": "0.5.13",
-    "archdevts": "20.9.1"
+    "@types/amqplib": "0.5.17",
+    "archdevts": "20.12.19"
   }
 }

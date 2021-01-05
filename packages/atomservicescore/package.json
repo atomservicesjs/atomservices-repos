@@ -1,6 +1,6 @@
 {
   "name": "atomservicescore",
-  "version": "0.10.0-alpha.29",
+  "version": "0.10.0-alpha.30",
   "description": "Core Library Providing Definitions and Interfaces",
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
@@ -29,6 +29,6 @@
   "license": "MIT",
   "repository": "git+https://github.com/atomservicesjs/atom-repos",
   "devDependencies": {
-    "archdevts": "20.9.1"
+    "archdevts": "20.12.19"
   }
 }
