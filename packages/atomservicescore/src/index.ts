@@ -11,6 +11,11 @@ export {
 } from "./common";
 
 export {
+  ComposeServicesContainer,
+  EnhanceManagedServicesContainer,
+} from "./Containers";
+
+export {
   EventProcessType,
   EventVersioning,
   IServiceConfigs,
@@ -36,7 +41,7 @@ export { IEventWithVersioning } from "./IEventWithVersioning";
 export { IEventWithoutVersioning } from "./IEventWithoutVersioning";
 export { IIdentifier } from "./IIdentifier";
 export { IManagedService } from "./IManagedService";
-export { IManagedServiceContainer } from "./IManagedServiceContainer";
+export { IManagedServicesContainer } from "./IManagedServicesContainer";
 export { INotifier } from "./INotifier";
 export { INotifiers } from "./INotifiers";
 export { INotifyData } from "./INotifyData";
@@ -44,8 +49,9 @@ export { INotifyLog } from "./INotifyLog";
 export { INotifyObject } from "./INotifyObject";
 export { IReaction } from "./IReaction";
 export { IService } from "./IService";
-export { IServiceDispatchable } from "./IServiceDispatchable";
 export { IServicesContainer } from "./IServicesContainer";
+export { IServicesContainerInitializer } from "./IServicesContainerInitializer";
+export { IServiceDispatchable } from "./IServiceDispatchable";
 export { ISFComponents } from "./ISFComponents";
 export { IState } from "./IState";
 export { IStateAccess } from "./IStateAccess";

@@ -1,40 +1,42 @@
-import { ICommand, IManagedService, IManagedServiceContainer, IServicesContainer } from "atomservicescore";
+import {
+  EnhanceManagedServicesContainer,
+  ICommand,
+  IManagedService,
+  IManagedServicesContainer,
+  IServicesContainer,
+} from "atomservicescore";
 import { composeNotifiers, ContainersNotifyData } from "../Notifiers";
 import { createService } from "../Services/createService";
-import { Enhancement } from "./Enhancement";
-import { IManagedServiceContainerResult } from "./IManagedServiceContainerResult";
 
-export const createContainer = (container: IServicesContainer, enhancement?: Enhancement): IManagedServiceContainerResult =>
-  ((CONTAINER, ENHANCEMENT): IManagedServiceContainerResult | ReturnType<Enhancement> => {
+export const createContainer = (container: IServicesContainer, enhancement?: EnhanceManagedServicesContainer) =>
+  ((CONTAINER, ENHANCEMENT) => {
     const ContainerNotifiers = CONTAINER.Notifiers || [];
     const NOTIFIERS = composeNotifiers(...ContainerNotifiers);
 
     const Services = Object.keys(CONTAINER.Services).reduce((result, key) => {
       const service = createService(CONTAINER.Services[key], CONTAINER);
       const type = service.type();
+
       result[type] = service;
 
       return result;
     }, {} as { [key: string]: IManagedService; });
 
-    const ResolveService = (type: string) => Services[type];
-
-    const Container: IManagedServiceContainer = {
-      assignDispatch: (service: string | { Type: string; }, options: { isAutoConnect?: boolean; } = {}) => {
+    const Container: IManagedServicesContainer = {
+      assignDispatch: (service, options: { isAutoConnect?: boolean; } = {}) => {
         const { isAutoConnect = false } = options;
-        const target = typeof service === "string" ? { Type: service } : service;
 
         const dispatch = async (command: ICommand, listening?: (data: any) => void) => {
           if (isAutoConnect) {
             await Container.connect();
           }
 
-          const Service = ResolveService(target.Type);
+          const Service = Container.service(service.Type);
 
           return Service.dispatch(command, listening);
         };
 
-        return Object.assign(target, { dispatch });
+        return Object.assign(service, { dispatch });
       },
       connect: (() => {
         let IsConnected = false;
@@ -56,18 +58,19 @@ export const createContainer = (container: IServicesContainer, enhancement?: Enh
             await Container.connect();
           }
 
-          const service = ResolveService(type);
+          const service = Container.service(type);
 
           return service.dispatch(command, listening);
         };
       },
       dispatch: async (type, command, listening) => {
-        const service = ResolveService(type);
+        const service = Container.service(type);
 
         return service.dispatch(command, listening);
       },
-      service: (type) =>
-        ResolveService(type),
+      service: (type) => {
+        return Services[type];
+      },
       scope: () =>
         CONTAINER.scope,
     };
@@ -87,10 +90,8 @@ export const createContainer = (container: IServicesContainer, enhancement?: Enh
     if (ENHANCEMENT) {
       const result = ENHANCEMENT(Container);
 
-      return result || { Container };
+      return result;
     } else {
-      return {
-        Container,
-      };
+      return { Container };
     }
   })(container, enhancement);

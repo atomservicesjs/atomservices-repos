@@ -26,7 +26,7 @@ export {
   IEventStream,
   IIdentifier,
   IManagedService,
-  IManagedServiceContainer,
+  IManagedServicesContainer,
   INotifier,
   INotifyLog,
   INotifyObject,
