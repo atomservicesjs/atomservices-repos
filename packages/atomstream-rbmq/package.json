@@ -1,6 +1,6 @@
 {
   "name": "atomstream-rbmq",
-  "version": "0.10.0-alpha.35",
+  "version": "0.10.0-alpha.36",
   "description": "Providing Event Stream Implementing RabbitMQ using AMQ Protocol",
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
@@ -31,12 +31,11 @@
   "license": "MIT",
   "repository": "git+https://github.com/atomservicesjs/atom-repos",
   "dependencies": {
-    "atomservicescore": "0.10.0-alpha.35",
-    "rbmq": "0.10.0-alpha.35"
+    "atomservicescore": "0.10.0-alpha.36",
+    "rbmq": "0.10.0-alpha.36"
   },
   "devDependencies": {
     "@types/amqplib": "0.5.17",
     "archdevts": "21.1.1"
-  },
-  "gitHead": "00a0693f1c8114afa07d8a558f942c6e84b76560"
+  }
 }
