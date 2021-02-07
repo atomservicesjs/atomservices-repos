@@ -18,7 +18,11 @@ export const composeContainerInitializer = (container: IServicesContainer, dispa
       return Initializer;
     },
     initialize: (enhancement) => {
-      const composed = [...ComposersSet].reduce((result, compose) => compose(result), Container);
+      const composed = [...ComposersSet].reduce((result, compose) => {
+        compose(result);
+
+        return result;
+      }, Container);
 
       return createContainer(composed, (managedContainer) => {
         Object.keys(dispatchableServices).forEach((key) => {

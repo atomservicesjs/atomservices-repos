@@ -4,7 +4,7 @@
   "scripts": {
     "init": "lerna init",
     "setup": "lerna bootstrap",
-    "release": "lerna publish --force-publish",
+    "release": "lerna publish --force-publish --exact",
     "build": "lerna run build"
   },
   "devDependencies": {

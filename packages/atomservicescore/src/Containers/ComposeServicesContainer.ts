@@ -1,3 +1,3 @@
 import { IServicesContainer } from "../IServicesContainer";
 
-export type ComposeServicesContainer = (container: IServicesContainer) => IServicesContainer;
+export type ComposeServicesContainer = (container: IServicesContainer) => void;
