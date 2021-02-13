@@ -67,9 +67,9 @@ export const EventPublishingErrorException = (error: Error, event: IEvent, scope
     },
   );
 
-export const NotAllowedVersionEventErrorException = (event: IEvent, scope: string) =>
+export const NotAllowedVersioningEventErrorException = (event: IEvent, scope: string) =>
   createException(
-    Constants["000107_NotAllowedVersionEventError"],
+    Constants["000107_NotAllowedVersioningEventError"],
     `versioning events not allowed`,
     {
       event,

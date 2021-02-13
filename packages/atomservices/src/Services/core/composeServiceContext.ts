@@ -13,7 +13,7 @@ import {
   EventStoringErrorException,
   EventVersionConflictedConcurrentException,
   NoEventStoresProvidedException,
-  NotAllowedVersionEventErrorException,
+  NotAllowedVersioningEventErrorException,
   NotAllowedDynamicVersionEventErrorException,
 } from "../../Exceptions/Core";
 
@@ -36,7 +36,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
   const StateHandlers = composeStateHandlers(...definition.StateHandlers)(type);
   const StateApplier = composeStateApplier({ StateHandlers });
 
-  return (options: { isReplay?: boolean; } = {}): IServiceContext => {
+  return (options: { isReplay?: boolean; requestID: string; }): IServiceContext => {
     const isReplay = options.isReplay || false;
 
     const ServiceContext: IServiceContext = {
@@ -56,7 +56,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
             if (event._version === undefined || event._version === null) {
               await EventStores.storeEvent(scope, event);
             } else {
-              throw NotAllowedVersionEventErrorException(event, scope);
+              throw NotAllowedVersioningEventErrorException(event, scope);
             }
           } else {
             // VERSIONING

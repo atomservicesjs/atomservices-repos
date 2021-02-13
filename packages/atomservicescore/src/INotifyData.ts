@@ -5,10 +5,10 @@ export interface INotifyData {
     type: string;
     name: string;
   };
+  message: string;
   fields?: {
     [field: string]: any;
   };
-  message: string;
   obj?: {
     [key: string]: any;
   };

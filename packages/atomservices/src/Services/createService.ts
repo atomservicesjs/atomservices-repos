@@ -80,7 +80,7 @@ export const createService = (service: IService, container?: IServicesContainer)
         command,
       }));
 
-      const result = await CommandDispatcher.dispatch(command, listening);
+      const result = await CommandDispatcher.dispatch(command, meta, listening);
 
       if (!result.accept) {
         if (result.status === "error") {
