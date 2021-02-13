@@ -70,7 +70,7 @@ export const createService = (service: IService, container?: IServicesContainer)
     },
     context: (options) =>
       composeServiceContext(definition)(options),
-    dispatch: async (command, listening) => {
+    dispatch: async (command, meta, listening) => {
       NOTIFIERS.emit(ServicesNotifyData.SERVICE_COMMAND_DISPATCHING(SERVICE.type, {
         scope: SERVICE.scope,
         type: SERVICE.type,

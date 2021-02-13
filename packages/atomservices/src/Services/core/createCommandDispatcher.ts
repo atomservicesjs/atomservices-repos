@@ -11,7 +11,7 @@ export const createCommandDispatcher = (definition: IServiceDefinition): IComman
   const ServiceContextComposing = composeServiceContext(Definition);
 
   const CommandDispatcher: ICommandDispatcher = {
-    dispatch: async (command, listening) => {
+    dispatch: async (command, meta, listening) => {
       const { name } = command;
 
       try {

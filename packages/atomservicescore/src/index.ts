@@ -7,6 +7,7 @@ export * as StateHandler from "./StateHandler";
 export {
   DispatchFunc,
   DispatchResult,
+  IDispatchMeta,
   IValidationResultType,
 } from "./common";
 

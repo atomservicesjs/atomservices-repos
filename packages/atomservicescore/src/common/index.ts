@@ -9,4 +9,5 @@ export {
   DispatchResult,
 };
 
+export { IDispatchMeta } from "./IDispatchMeta";
 export { IValidationResultType } from "./IValidationResultType";
