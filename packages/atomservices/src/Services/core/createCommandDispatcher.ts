@@ -11,7 +11,7 @@ export const createCommandDispatcher = (definition: IServiceDefinition): IComman
   const ServiceContextComposing = composeServiceContext(Definition);
 
   const CommandDispatcher: ICommandDispatcher = {
-    dispatch: async (command, meta, listening) => {
+    dispatch: async (command, meta = {}, listening) => {
       const { name } = command;
 
       try {
@@ -28,7 +28,10 @@ export const createCommandDispatcher = (definition: IServiceDefinition): IComman
             return DispatchResult.invalid(invalidAttributes);
           }
 
-          const ServiceContext = ServiceContextComposing({ isReplay: false });
+          const ServiceContext = ServiceContextComposing({
+            isReplay: false,
+            ...meta,
+          });
           const event = CommandHandler.transform(command, ServiceContext);
 
           // #DISPATCH PROCESS: Apply LISTENING

@@ -36,9 +36,10 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
   const StateHandlers = composeStateHandlers(...definition.StateHandlers)(type);
   const StateApplier = composeStateApplier({ StateHandlers });
 
-  return (options: { isReplay?: boolean; requestID: string; }): IServiceContext => {
-    const isReplay = options.isReplay || false;
-
+  return (meta: {
+    isReplay: boolean;
+    [key: string]: any;
+  }): IServiceContext => {
     const ServiceContext: IServiceContext = {
       AggregateID: () =>
         ServiceIdentifier.AggregateID(),
@@ -51,8 +52,9 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         let eventVersion: number | undefined = event._version;
 
         // STORE EVENT
-        if (EventStores && !isReplay) {
+        if (EventStores && !meta.isReplay) {
           if (versioning === "none") {
+            // NON-VERSIONING
             if (event._version === undefined || event._version === null) {
               await EventStores.storeEvent(scope, event);
             } else {
@@ -101,7 +103,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         }
 
         // PREPARE
-        const metadata = MetadataRefiner.dispatch({ isReplay });
+        const metadata = MetadataRefiner.dispatch(meta);
         const processType = ServiceConfigurate.processType(event.name);
 
         // SYNC PROCESS
@@ -119,6 +121,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
           const on = { level: ServiceConfigurate.level(event.name), scope };
 
           await EventStream.publish({ event, metadata, on });
+
           Notifiers.emit(ServicesNotifyData.SERVICE_EVENT_DISPATCHED(type, {
             eventID: event._id,
             scope,
@@ -128,8 +131,12 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
             aggregateID: event.aggregateID,
             _createdAt: event._createdAt,
             _createdBy: event._createdBy,
-            _version: eventVersion,
-          }, { event }));
+            ...(isEventVersionDefined(event) ? { _version: event._version } : {}),
+          }, {
+            event,
+          },
+            meta,
+          ));
         } catch (error) {
           throw EventPublishingErrorException(error, event, scope);
         }
@@ -147,6 +154,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
           level: data.level,
           message: data.message,
           obj: data.obj,
+          meta: data.meta,
         }),
       queryCurrentVersion: (aggregateID) => {
         if (EventStores) {

@@ -2,11 +2,11 @@ import { EventStream } from "atomservicescore";
 
 export const MetadataRefiner = {
   consume: (metadata: EventStream.IStreamMetadata) => {
-    const meta = metadata.__ || {};
+    const internal = metadata.__ || {};
     const now = Date.now();
     let duration: any;
 
-    const { time } = meta.dispatch || {};
+    const { time } = internal.dispatch || {};
 
     if (time) {
       duration = now - time;
@@ -14,7 +14,7 @@ export const MetadataRefiner = {
 
     return Object.assign({}, metadata, {
       __: {
-        ...meta,
+        ...internal,
         dispatch: {
           duration,
           time,

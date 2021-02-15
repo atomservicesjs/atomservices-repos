@@ -27,15 +27,15 @@ export const LocalEventStream: EventStream.IEventPublishing & EventStream.IEvent
       const exchanges: string[] = [];
 
       reactions.events.forEach((reaction) => {
-        const ex = endpoints.toExchange({ level: "Public", scope: reaction.scope, type: reaction.type });
+        const exchange = endpoints.toExchange({ level: "Public", scope: reaction.scope, type: reaction.type });
 
-        if (StreamRegistry[ex] === undefined) {
-          StreamRegistry[ex] = [];
+        if (StreamRegistry[exchange] === undefined) {
+          StreamRegistry[exchange] = [];
         }
 
-        if (exchanges.indexOf(ex) === -1) {
-          StreamRegistry[ex].push(reactions.processes[scope]);
-          exchanges.push(ex);
+        if (exchanges.indexOf(exchange) === -1) {
+          StreamRegistry[exchange].push(reactions.processes[scope]);
+          exchanges.push(exchange);
         }
       });
     }
@@ -43,12 +43,12 @@ export const LocalEventStream: EventStream.IEventPublishing & EventStream.IEvent
   publish: async ({ event, metadata, on }) => {
     const { level, scope } = on;
     const { type } = event;
-    const ex = endpoints.toExchange({ level, scope, type });
+    const exchange = endpoints.toExchange({ level, scope, type });
 
-    if (StreamRegistry[ex]) {
+    if (StreamRegistry[exchange]) {
       // tslint:disable-next-line: no-empty
       const processAck: any = () => { };
-      StreamRegistry[ex].forEach((each) => each(event, metadata, processAck));
+      StreamRegistry[exchange].forEach((stream) => stream(event, metadata, processAck));
     }
   },
   subscribe: async (definition) => {

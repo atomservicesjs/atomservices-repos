@@ -8,4 +8,7 @@ export interface IServiceNotifyData {
   obj?: {
     [key: string]: any;
   };
+  meta?: {
+    [key: string]: any;
+  };
 }

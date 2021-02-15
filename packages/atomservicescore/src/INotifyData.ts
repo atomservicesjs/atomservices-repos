@@ -12,4 +12,7 @@ export interface INotifyData {
   obj?: {
     [key: string]: any;
   };
+  meta?: {
+    [key: string]: any;
+  };
 }

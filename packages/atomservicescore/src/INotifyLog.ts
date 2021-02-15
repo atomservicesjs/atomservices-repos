@@ -9,4 +9,7 @@ export interface INotifyLog {
   fields?: {
     [field: string]: any;
   };
+  meta?: {
+    [key: string]: any;
+  };
 }
