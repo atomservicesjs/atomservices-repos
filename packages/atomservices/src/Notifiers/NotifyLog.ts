@@ -4,8 +4,9 @@ export class NotifyLog implements INotifyLog {
   public readonly action: string;
   public readonly level: string;
   public readonly component: { type: string; name: string; };
-  public readonly fields: { [field: string]: any; };
   public readonly message: string;
+  public readonly fields: { [field: string]: any; };
+  public readonly meta: { [key: string]: any; };
 
   constructor(data: INotifyData, error?: Error) {
     this.action = data.action;
@@ -32,5 +33,11 @@ export class NotifyLog implements INotifyLog {
       .replace("$$ACTION$$", data.action)
       .replace("$$NAME$$", data.component.name)
       .replace("$$TYPE$$", data.component.type);
+
+    if (data.meta) {
+      this.meta = {
+        ...data.meta,
+      };
+    }
   }
 }

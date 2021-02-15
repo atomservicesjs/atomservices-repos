@@ -4,9 +4,10 @@ export class NotifyObject implements INotifyObject {
   public readonly action: string;
   public readonly level: string;
   public readonly component: { type: string; name: string; };
-  public readonly fields: { [field: string]: any; };
   public readonly message: string;
+  public readonly fields: { [field: string]: any; };
   public readonly obj: { [key: string]: any; };
+  public readonly meta: { [key: string]: any; };
 
   constructor(data: INotifyData, error?: Error) {
     this.action = data.action;
@@ -37,6 +38,12 @@ export class NotifyObject implements INotifyObject {
     if (data.obj) {
       this.obj = {
         ...data.obj,
+      };
+    }
+
+    if (data.meta) {
+      this.meta = {
+        ...data.meta,
       };
     }
   }

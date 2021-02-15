@@ -36,7 +36,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
   const StateHandlers = composeStateHandlers(...definition.StateHandlers)(type);
   const StateApplier = composeStateApplier({ StateHandlers });
 
-  return (meta: {
+  return (metadata: {
     isReplay: boolean;
     [key: string]: any;
   }): IServiceContext => {
@@ -52,7 +52,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         let eventVersion: number | undefined = event._version;
 
         // STORE EVENT
-        if (EventStores && !meta.isReplay) {
+        if (EventStores && !metadata.isReplay) {
           if (versioning === "none") {
             // NON-VERSIONING
             if (event._version === undefined || event._version === null) {
@@ -103,7 +103,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         }
 
         // PREPARE
-        const metadata = MetadataRefiner.dispatch(meta);
+        const meta = MetadataRefiner.dispatch(metadata);
         const processType = ServiceConfigurate.processType(event.name);
 
         // SYNC PROCESS
@@ -112,7 +112,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
 
           if (EventHandler) {
             const resulting = (data: any) => LocalDirectStream.directTo(event._id, data);
-            await operateEventProcess(EventHandler, StateApplier, ServiceContext, resulting, Notifiers)(Definition, event, metadata);
+            await operateEventProcess(EventHandler, StateApplier, ServiceContext, resulting, Notifiers)(Definition, event, meta);
           }
         }
 
@@ -120,7 +120,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
         try {
           const on = { level: ServiceConfigurate.level(event.name), scope };
 
-          await EventStream.publish({ event, metadata, on });
+          await EventStream.publish({ event, metadata: meta, on });
 
           Notifiers.emit(ServicesNotifyData.SERVICE_EVENT_DISPATCHED(type, {
             eventID: event._id,
@@ -135,8 +135,7 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
           }, {
             event,
           },
-            meta,
-          ));
+            meta));
         } catch (error) {
           throw EventPublishingErrorException(error, event, scope);
         }

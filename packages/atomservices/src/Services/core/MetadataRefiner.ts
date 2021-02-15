@@ -1,32 +1,32 @@
 import { EventStream } from "atomservicescore";
 
+interface IInternalMetadata {
+  dispatch?: {
+    time: number;
+  };
+}
+
 export const MetadataRefiner = {
-  consume: (metadata: EventStream.IStreamMetadata) => {
-    const internal = metadata.__ || {};
-    const now = Date.now();
-    let duration: any;
+  consume: (metadata: EventStream.IStreamMetadata): EventStream.IStreamMetadata => {
+    const { __, ...others } = metadata;
+    const internal: IInternalMetadata = __ || {};
+    const computed: any = {};
 
-    const { time } = internal.dispatch || {};
-
-    if (time) {
-      duration = now - time;
+    if (internal.dispatch && internal.dispatch.time) {
+      const now = Date.now();
+      const { time } = internal.dispatch;
+      computed.duration = now - time;
     }
 
-    return Object.assign({}, metadata, {
-      __: {
-        ...internal,
-        dispatch: {
-          duration,
-          time,
-        },
-      },
-    });
+    return Object.assign({}, others, computed);
   },
-  dispatch: (metadata: EventStream.IStreamMetadata) => Object.assign({}, metadata, {
-    __: {
+  dispatch: (metadata: EventStream.IStreamMetadata): EventStream.IStreamMetadata => {
+    const internal: IInternalMetadata = {
       dispatch: {
         time: Date.now(),
       },
-    },
-  }),
+    };
+
+    return Object.assign({}, metadata, { __: internal });
+  },
 };

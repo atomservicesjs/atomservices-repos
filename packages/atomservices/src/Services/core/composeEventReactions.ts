@@ -20,11 +20,11 @@ export const composeEventReactions = (definition: IServiceDefinition): EventStre
     const processing: EventStream.StreamProcessing = async (event, metadata, processAck) => {
       const reacts = [];
       const reactions = Reactions.resolve(event, scope);
-      metadata = MetadataRefiner.consume(metadata);
+      const meta = MetadataRefiner.consume(metadata);
 
       for (const reaction of reactions) {
-        const ServiceContext = ServiceContextComposing(metadata);
-        reacts.push(reaction.react(event, ServiceContext, metadata));
+        const ServiceContext = ServiceContextComposing(meta);
+        reacts.push(reaction.react(event, ServiceContext, meta));
       }
 
       await Promise.all(reacts);
@@ -38,7 +38,6 @@ export const composeEventReactions = (definition: IServiceDefinition): EventStre
           // tslint:disable-next-line: object-literal-sort-keys
           event: {
             eventID: event._id,
-            metadata,
             scope,
             type: event.type,
             // tslint:disable-next-line: object-literal-sort-keys
@@ -46,12 +45,12 @@ export const composeEventReactions = (definition: IServiceDefinition): EventStre
             aggregateID: event.aggregateID,
             _createdAt: event._createdAt,
             _createdBy: event._createdBy,
-            _version: event._version,
+            ...(event._version ? { _version: event._version } : {}),
           },
         }, {
           event,
-          metadata,
-        }));
+        },
+          meta));
       }
       await processAck();
     };

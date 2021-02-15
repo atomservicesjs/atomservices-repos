@@ -10,46 +10,73 @@ export const operateEventProcess = (
   Notifiers: INotifiers,
 ) =>
   async (service: { scope: string; type: string; }, event: IEvent, metadata: EventStream.IStreamMetadata) => {
-    metadata = MetadataRefiner.consume(metadata);
+    const meta = MetadataRefiner.consume(metadata);
+    let hasError = false;
     let result;
 
     try {
-      result = await EventHandler.process(event, metadata, StateApplier);
+      result = await EventHandler.process(event, meta, StateApplier);
     } catch (error) {
-      Notifiers.error(ServicesNotifyData.SERVICE_COMMAND_ERROR(event.name, {
+      Notifiers.error(ServicesNotifyData.SERVICE_EVENT_PROCESS_ERROR(event.name, {
+        eventID: event._id,
         scope: service.scope,
         type: service.type,
         // tslint:disable-next-line: object-literal-sort-keys
         name: event.name,
+        aggregateID: event.aggregateID,
+        _createdAt: event._createdAt,
+        _createdBy: event._createdBy,
+        ...(event._version ? { _version: event._version } : {}),
       }, {
         event,
-      }), error);
+      },
+        meta), error);
 
       result = error;
+      hasError = true;
     }
 
-    if (EventHandler.processEffect) {
-      await EventHandler.processEffect({ event, metadata, result }, resulting, ServiceContext);
+    if (!hasError && EventHandler.processEffect) {
+      try {
+        await EventHandler.processEffect({ event, metadata: meta, result }, resulting, ServiceContext);
+      } catch (error) {
+        Notifiers.error(ServicesNotifyData.SERVICE_EVENT_PROCESS_EFFECT_ERROR(event.name, {
+          eventID: event._id,
+          scope: service.scope,
+          type: service.type,
+          // tslint:disable-next-line: object-literal-sort-keys
+          name: event.name,
+          aggregateID: event.aggregateID,
+          _createdAt: event._createdAt,
+          _createdBy: event._createdBy,
+          ...(event._version ? { _version: event._version } : {}),
+        }, {
+          event,
+        },
+          meta), error);
+        hasError = true;
+      }
     } else {
       if (result) {
         await resulting(result);
       }
-    }
 
-    Notifiers.emit(ServicesNotifyData.SERVICE_EVENT_HANDLED(event.type, {
-      eventID: event._id,
-      metadata,
-      scope: service.scope,
-      type: service.type,
-      // tslint:disable-next-line: object-literal-sort-keys
-      name: event.name,
-      aggregateID: event.aggregateID,
-      _createdAt: event._createdAt,
-      _createdBy: event._createdBy,
-      _version: event._version,
-    }, {
-      event,
-      metadata,
-      result,
-    }));
+      if (!hasError) {
+        Notifiers.emit(ServicesNotifyData.SERVICE_EVENT_HANDLED(event.type, {
+          eventID: event._id,
+          scope: service.scope,
+          type: service.type,
+          // tslint:disable-next-line: object-literal-sort-keys
+          name: event.name,
+          aggregateID: event.aggregateID,
+          _createdAt: event._createdAt,
+          _createdBy: event._createdBy,
+          ...(event._version ? { _version: event._version } : {}),
+        }, {
+          event,
+          result,
+        },
+          meta));
+      }
+    }
   };

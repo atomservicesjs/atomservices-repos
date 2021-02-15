@@ -78,7 +78,8 @@ export const createService = (service: IService, container?: IServicesContainer)
         name: command.name,
       }, {
         command,
-      }));
+      },
+        meta));
 
       const result = await CommandDispatcher.dispatch(command, meta, listening);
 
@@ -91,7 +92,8 @@ export const createService = (service: IService, container?: IServicesContainer)
             name: command.name,
           }, {
             command,
-          }), result.error);
+          },
+            meta), result.error);
         }
 
         if (result.status === "invalid") {
@@ -103,7 +105,8 @@ export const createService = (service: IService, container?: IServicesContainer)
             invalidAttributes: result.invalidAttributes,
           }, {
             command,
-          }));
+          },
+            meta));
         }
 
         if (result.status === "unhandled") {
@@ -114,7 +117,8 @@ export const createService = (service: IService, container?: IServicesContainer)
             name: command.name,
           }, {
             command,
-          }));
+          },
+            meta));
         }
       }
 
