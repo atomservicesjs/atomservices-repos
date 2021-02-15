@@ -3,8 +3,8 @@ import { IConstantData } from "./IConstantData";
 const type = "Services";
 
 export const ServicesData = {
-  SERVICE_COMMAND_DISPATCHING: { action: "SERVICE_COMMAND_DISPATCHING", level: "info", message: "[Service: $$NAME$$] Command Dispatching", type } as IConstantData,
-  SERVICE_COMMAND_ERROR: { action: "SERVICE_COMMAND_ERROR", level: "error", message: "[Service: $$NAME$$] Command Dispatching Error", type } as IConstantData,
+  SERVICE_COMMAND_DISPATCHING: { action: "SERVICE_COMMAND_DISPATCHING", level: "info", message: "[Service: $$NAME$$] [Command: $$SNAME$$] Dispatching", type } as IConstantData,
+  SERVICE_COMMAND_ERROR: { action: "SERVICE_COMMAND_ERROR", level: "error", message: "[Service: $$NAME$$] [Command: $$SNAME$$] Dispatching Error", type } as IConstantData,
   SERVICE_COMMAND_INVALID: { action: "SERVICE_COMMAND_INVALID", level: "warn", message: "[Service: $$NAME$$] Command Invalid", type } as IConstantData,
   SERVICE_COMMAND_UNHANDLED: { action: "SERVICE_COMMAND_UNHANDLED", level: "warn", message: "[Service: $$NAME$$] Command Unhandled", type } as IConstantData,
   SERVICE_CONNECTED: { action: "SERVICE_CONNECTED", level: "info", message: "[Service: $$NAME$$] Connected", type } as IConstantData,

@@ -32,11 +32,14 @@ export class NotifyLog implements INotifyLog {
     this.message = data.message
       .replace("$$ACTION$$", data.action)
       .replace("$$NAME$$", data.component.name)
+      .replace("$$SNAME$$", (data.fields && data.fields.name) || "")
       .replace("$$TYPE$$", data.component.type);
 
     if (data.meta) {
+      const { __, ...others } = data.meta;
+
       this.meta = {
-        ...data.meta,
+        ...others,
       };
     }
   }

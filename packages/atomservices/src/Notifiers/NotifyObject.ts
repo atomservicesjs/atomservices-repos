@@ -33,6 +33,7 @@ export class NotifyObject implements INotifyObject {
     this.message = data.message
       .replace("$$ACTION$$", data.action)
       .replace("$$NAME$$", data.component.name)
+      .replace("$$SNAME$$", (data.fields && data.fields.name) || "")
       .replace("$$TYPE$$", data.component.type);
 
     if (data.obj) {
@@ -42,8 +43,10 @@ export class NotifyObject implements INotifyObject {
     }
 
     if (data.meta) {
+      const { __, ...others } = data.meta;
+
       this.meta = {
-        ...data.meta,
+        ...others,
       };
     }
   }
