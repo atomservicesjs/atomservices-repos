@@ -3,6 +3,7 @@
 /node_modules
 /lib
 /typings
+/Services
 
 # Files
 .DS_Store
