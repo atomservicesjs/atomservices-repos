@@ -1,61 +1,16 @@
 import { IServicesContainer } from "atomservices";
-import Scope from "./Scope";
+import scope from "./Scope";
+import UserAccounts from "./UserAccounts/ContainizedService";
+import UserAuths from "./UserAuths/ContainizedService";
 
-// ## Import Containized Services ##
-import UserAuths from "./UserAuths/ContainizedService";
-import UserAuths from "./UserAuths/ContainizedService";
-import UserAuths from "./UserAuths/ContainizedService";
-import UserAuths from "./UserAuths/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
-import UserAccounts from "./UserAccounts/ContainizedService";
+const Services = {
+  UserAccounts,
+  UserAuths,
+};
 
 const ServicesContainer: IServicesContainer = {
-  scope: Scope,
-  Services: {
-    // ## Containized Services ##
-    UserAuths,
-    UserAuths,
-    UserAuths,
-    UserAuths,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-    UserAccounts,
-  },
+  scope,
+  Services,
 };
 
 export default ServicesContainer;

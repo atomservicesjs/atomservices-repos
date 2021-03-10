@@ -1,1 +1,1 @@
-export default "UserAccounts";
+export default "Accounts";

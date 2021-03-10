@@ -8,7 +8,7 @@
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
   "scripts": {
-    "dev": "npm run cleanup && nodemon -e ts --watch src --exec 'npm run build && node ./lib/index.js service UserAuths AccountsCreated CreateAccount -d ./'",
+    "dev": "npm run cleanup && nodemon -e ts --watch src --exec 'npm run build && node ./lib/index.js sfc UserAccounts AccountsCreated CreateAccount -d ./'",
     "build": "npm run cleanup && npm run build-ts",
     "build-es5": "npm run cleanup && npm run build-ts-es5",
     "build-es6": "npm run cleanup && npm run build-ts-es6",

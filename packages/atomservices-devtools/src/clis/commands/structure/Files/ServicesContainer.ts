@@ -1,25 +1,51 @@
 import * as FS from "fs";
 import * as Path from "path";
 import * as Write from "write";
+import { Indexer } from "../common/Indexer";
 import { IProps } from "./IProps";
 
+const keyText = "const Services";
 const templateCreate = () => `import { IServicesContainer } from "atomservices";
-import Scope from "./Scope";
+import scope from "./Scope";
 
-// ## Import Containized Services ##
+${keyText} = {
+};
 
 const ServicesContainer: IServicesContainer = {
-  scope: Scope,
-  Services: {
-    // ## Containized Services ##
-  },
+  scope,
+  Services,
 };
 
 export default ServicesContainer;
 `;
 
 const templateImport = (type: string) => `import ${type} from "./${type}/ContainizedService";\n`;
-const templateService = (type: string) => `    ${type},\n`;
+const templateService = (type: string) => `  ${type},\n`;
+
+const sliceContent = (content: string) => {
+  const importIndex = Indexer.ofNextImport(content);
+  const indexOfKeyText = content.indexOf(keyText) + keyText.length;
+  const substr = content.slice(indexOfKeyText);
+  let firstIndex = indexOfKeyText + substr.indexOf("{") + 1;
+
+  if (content[firstIndex] === "\n") {
+    firstIndex++;
+  }
+
+  const lastIndex = indexOfKeyText + substr.indexOf("}");
+
+  const importSect = content.slice(0, importIndex);
+  const preservicesSect = content.slice(importIndex, firstIndex);
+  const servicesSect = content.slice(firstIndex, lastIndex);
+  const postservicesSect = content.slice(lastIndex);
+
+  return {
+    import: importSect,
+    preservices: preservicesSect,
+    services: servicesSect,
+    postservices: postservicesSect,
+  };
+};
 
 export const ServicesContainer = ({ basepath, containized, ext }: IProps) => {
   const file = Path.resolve(basepath, `./${containized}/ServicesContainer.${ext}`);
@@ -38,19 +64,20 @@ export const ServicesContainer = ({ basepath, containized, ext }: IProps) => {
       }
 
       const data = FS.readFileSync(file, "utf8");
-      const importText = "// ## Import Containized Services ##\n";
-      const importIndex = data.indexOf(importText) + importText.length;
+      const importSection = templateImport(type);
 
-      const servicesText = "// ## Containized Services ##\n";
-      const servicesIndex = data.indexOf(servicesText) + servicesText.length;
+      if (data.indexOf(importSection) === -1) {
+        const sections = sliceContent(data);
 
-      const content = data.slice(0, importIndex) +
-        templateImport(type) +
-        data.slice(importIndex, servicesIndex) +
-        templateService(type) +
-        data.slice(servicesIndex);
+        const content = sections.import +
+          templateImport(type) +
+          sections.preservices +
+          sections.services +
+          templateService(type) +
+          sections.postservices;
 
-      Write.sync(file, content);
+        Write.sync(file, content);
+      }
     },
   };
 };

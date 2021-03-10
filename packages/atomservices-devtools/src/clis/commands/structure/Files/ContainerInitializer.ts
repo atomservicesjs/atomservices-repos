@@ -1,13 +1,14 @@
 import * as FS from "fs";
 import * as Path from "path";
 import * as Write from "write";
-import { IProps } from "./IProps";
 import { Indexer } from "../common/Indexer";
+import { IProps } from "./IProps";
 
+const keyText = "composeContainerInitializer";
 const templateCreate = () => `import { Containers } from "atomservices";
 import ServicesContainer from "./ServicesContainer";
 
-const ContainerInitializer = Containers.composeContainerInitializer(ServicesContainer, {
+const ContainerInitializer = Containers.${keyText}(ServicesContainer, {
 });
 
 export default ContainerInitializer;
@@ -18,15 +19,15 @@ const templateService = (type: string) => `  ${type},\n`;
 
 const sliceContent = (content: string) => {
   const importIndex = Indexer.ofNextImport(content);
-  const indexOfInitializer = content.indexOf("composeContainerInitializer");
-  const substr = content.slice(indexOfInitializer);
-  let firstIndex = indexOfInitializer + substr.indexOf("{") + 1;
+  const indexOfKeyText = content.indexOf(keyText);
+  const substr = content.slice(indexOfKeyText);
+  let firstIndex = indexOfKeyText + substr.indexOf("{") + 1;
 
   if (content[firstIndex] === "\n") {
-    firstIndex = firstIndex + 1;
+    firstIndex++;
   }
 
-  const lastIndex = indexOfInitializer + substr.indexOf("}");
+  const lastIndex = indexOfKeyText + substr.indexOf("}");
 
   const importSect = content.slice(0, importIndex);
   const preservicesSect = content.slice(importIndex, firstIndex);
@@ -38,7 +39,7 @@ const sliceContent = (content: string) => {
     preservices: preservicesSect,
     services: servicesSect,
     postservices: postservicesSect,
-  }
+  };
 };
 
 export const ContainerInitializer = ({ basepath, containized, ext }: IProps) => {
