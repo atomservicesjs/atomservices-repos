@@ -29,6 +29,12 @@ export const cli = () => {
     }
   }
 
+  // tslint:disable-next-line: no-console
+  console.log({
+    command,
+    vals,
+  });
+
   if (command === "init") {
     init({
       scope: primary,

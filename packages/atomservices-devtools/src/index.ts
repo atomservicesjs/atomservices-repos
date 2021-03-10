@@ -1,1 +1,3 @@
-export { cli } from "./clis";
+import { cli } from "./clis";
+
+cli();
