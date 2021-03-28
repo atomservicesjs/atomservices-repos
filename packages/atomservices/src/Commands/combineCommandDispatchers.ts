@@ -29,7 +29,7 @@ export const combineCommandDispatchers = (scope: string, ...dispatchers: IComman
     }, {} as IDispatchersMap);
 
     const DISPATCHERS: ICommandDispatchers = {
-      dispatch: (type, command, listening) => DISPATCHERS_MAP[type].dispatch(command, listening),
+      dispatch: (type, command, meta, listening) => DISPATCHERS_MAP[type].dispatch(command, meta, listening),
     };
 
     Object.freeze(DISPATCHERS);

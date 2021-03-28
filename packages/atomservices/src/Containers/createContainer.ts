@@ -1,6 +1,7 @@
 import {
   EnhanceManagedServicesContainer,
   ICommand,
+  IDispatchMeta,
   IManagedService,
   IManagedServicesContainer,
   IServicesContainer,
@@ -26,14 +27,14 @@ export const createContainer = (container: IServicesContainer, enhancement?: Enh
       assignDispatch: (service, options: { isAutoConnect?: boolean; } = {}) => {
         const { isAutoConnect = false } = options;
 
-        const dispatch = async (command: ICommand, listening?: (data: any) => void) => {
+        const dispatch = async (command: ICommand, meta?: IDispatchMeta,  listening?: (data: any) => void) => {
           if (isAutoConnect) {
             await Container.connect();
           }
 
           const Service = Container.service(service.Type);
 
-          return Service.dispatch(command, listening);
+          return Service.dispatch(command, meta, listening);
         };
 
         return Object.assign(service, { dispatch });
@@ -53,20 +54,20 @@ export const createContainer = (container: IServicesContainer, enhancement?: Enh
       composeDispatch: (type, options = {}) => {
         const { isAutoConnect = false } = options;
 
-        return async (command, listening) => {
+        return async (command, meta, listening) => {
           if (isAutoConnect) {
             await Container.connect();
           }
 
           const service = Container.service(type);
 
-          return service.dispatch(command, listening);
+          return service.dispatch(command, meta, listening);
         };
       },
-      dispatch: async (type, command, listening) => {
+      dispatch: async (type, command, meta, listening) => {
         const service = Container.service(type);
 
-        return service.dispatch(command, listening);
+        return service.dispatch(command, meta, listening);
       },
       service: (type) => {
         return Services[type];
