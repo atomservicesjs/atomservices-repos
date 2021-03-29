@@ -93,11 +93,11 @@ export const composeServiceContext = (definition: IServiceDefinition) => ((Defin
           }
         } else {
           if (!isEventVersionDefined(event)) {
-            if (versioning === "dynamic") {
+            if (versioning === "static") {
+              throw NotAllowedDynamicVersionEventErrorException(event, scope);
+            } else if (versioning === "dynamic") {
               eventVersion = -1;
               event._version = eventVersion;
-            } else {
-              throw NotAllowedDynamicVersionEventErrorException(event, scope);
             }
           }
         }
