@@ -1,6 +1,6 @@
 {
   "name": "atomservices-devtools",
-  "version": "0.10.0-alpha.43",
+  "version": "0.10.0-alpha.44",
   "description": "atomservices development tools",
   "bin": {
     "atom": "./atom.js"
