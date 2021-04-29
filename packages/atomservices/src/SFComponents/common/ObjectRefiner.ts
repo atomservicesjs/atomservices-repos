@@ -1,5 +1,4 @@
-const isNestedObject = (obj: any) =>
-  typeof obj === "object" && !Array.isArray(obj);
+import { typeOfValue } from "./typeOfValue";
 
 export const ObjectRefiner = {
   refine: (obj: { [key: string]: any; }) => {
@@ -7,8 +6,9 @@ export const ObjectRefiner = {
 
     return Object.keys(obj).reduce((result, key) => {
       const prop = obj[key];
+      const type = typeOfValue(prop);
 
-      if (isNestedObject(prop)) {
+      if (type === "object") {
         result[key] = ObjectRefiner.refine(prop);
       } else if (Array.isArray(prop)) {
         result[key] = prop.filter((each) => each !== undefined);
