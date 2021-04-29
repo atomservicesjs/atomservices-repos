@@ -23,6 +23,39 @@ describe("ObjectRefiner.ts tests", () => {
 
     it("expect to refine a nested object by removing undefined properties", () => {
       // arranges
+      const date = new Date();
+      const obj = {
+        text: "text",
+        prop1: undefined,
+        prop2: undefined,
+        nested: {
+          text: "text",
+          prop1: undefined,
+          prop2: undefined,
+          number: 0,
+          array: [],
+          date,
+        },
+      };
+      const expected = {
+        text: "text",
+        nested: {
+          text: "text",
+          number: 0,
+          array: [],
+          date,
+        },
+      };
+
+      // acts
+      const result = ObjectRefiner.refine(obj);
+
+      // asserts
+      expect(result).to.deep.equal(expected);
+    });
+
+    it("expect to refine a nested object by removing undefined properties", () => {
+      // arranges
       const obj = {
         text: "text",
         prop1: undefined,
